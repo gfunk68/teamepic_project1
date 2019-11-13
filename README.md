@@ -1,4 +1,7 @@
 # teamepic_project1
-< ol > < li > Solicia Xu
-< ol > < li > Vaishall Pradeepkumar
-< ol > < li > David Nassif
+* Solicia Xu
+	+ Chief Data Officer
+* Vaishall Pradeepkumar
+	+ Senior Analytics Engineer
+* David Nassif
+	+ Group Member 3
