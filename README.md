@@ -1,4 +1,4 @@
 # teamepic_project1
-## Solicia Xu
-## Vaishall Pradeepkumar
-## David Nassif
+< ol > < li > Solicia Xu
+< ol > < li > Vaishall Pradeepkumar
+< ol > < li > David Nassif
