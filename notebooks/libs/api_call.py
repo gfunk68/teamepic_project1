@@ -41,7 +41,12 @@ def worldbank():
     #drop rows that are not countries
     worldbank_df = worldbank_df[worldbank_df.Region != "Aggregates"]
     worldbank_df = worldbank_df.reset_index(drop=True)
-    
+    worldbank_df['Poverty Value (1-4)'] = worldbank_df['Poverty Level']
+    worldbank_df['Poverty Value (1-4)'] = worldbank_df['Poverty Value (1-4)'].replace('High income', 4)
+    worldbank_df['Poverty Value (1-4)'] = worldbank_df['Poverty Value (1-4)'].replace('Upper middle income', 3)
+    worldbank_df['Poverty Value (1-4)'] = worldbank_df['Poverty Value (1-4)'].replace('Lower middle income', 2)
+    worldbank_df['Poverty Value (1-4)'] = worldbank_df['Poverty Value (1-4)'].replace('Low income', 1)
+
     return worldbank_df
 
 def consumer_electronics():
@@ -73,8 +78,8 @@ def consumer_electronics():
     CountryRevenue2017 = CountryRevenueInfo.copy(deep=True)
     CountryRevenue2017['Year'] = '2017'
     CountryRevenue2018['Year'] = '2018'
-    CountryRevenueInfo['Revenue ($M)']=""
-    CountryRevenueInfo['Revenue ($M)']=""
+    CountryRevenue2017['Revenue ($M)']=""
+    CountryRevenue2018['Revenue ($M)']=""
     for index, row in CountryRevenueInfo.iterrows():
         #print(row['Country ID'])
         page = requests.get('https://www.statista.com/outlook/251/' + str(row['Country ID']) + '/consumer-electronics/worldwide')
@@ -91,6 +96,7 @@ def consumer_electronics():
     CountryRevenueInfo = pd.concat([CountryRevenue2017,CountryRevenue2018,CountryRevenue2019], ignore_index = False, sort=True)
 
     CountryRevenueInfo['Revenue ($M)'] = (CountryRevenueInfo['Revenue ($M)']).str.replace(',','').astype(float)
+    CountryRevenueInfo['Year'] = (CountryRevenueInfo['Year']).astype(float)
 
     
     return CountryRevenueInfo
