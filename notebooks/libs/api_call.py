@@ -5,6 +5,8 @@ from lxml import html
 from lxml import etree
 from bs4 import BeautifulSoup
  
+#worldbank.ipynb function
+
 def worldbank():
 
     # variables
@@ -48,6 +50,8 @@ def worldbank():
     worldbank_df['Poverty Value (1-4)'] = worldbank_df['Poverty Value (1-4)'].replace('Low income', 1)
 
     return worldbank_df
+
+#Consumer_Electronics_2019_per_country.ipynb function
 
 def consumer_electronics():
     
@@ -100,3 +104,24 @@ def consumer_electronics():
 
     
     return CountryRevenueInfo
+
+#worldpop.ipynb function
+
+def worldpop():
+    url = "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=20000"
+    country_list = []
+    iso2code = []
+    pop_list = []
+    year = []
+
+    response = requests.get(url).json()[1]
+
+    for x in range(len(response)):
+        iso2code.append(response[x]['country']['id'])
+        country_list.append(response[x]['country']['value'])
+        year.append(response[x]['date'])
+        pop_list.append(response[x]['value'])
+    worldpop_df = pd.DataFrame({"Country": country_list,"Country Code": iso2code,"Population": pop_list, "Year":year})
+    worldpop_df = worldpop_df[worldpop_df.Population > 0]
+    worldpop_df['Year']= worldpop_df['Year'].astype(float)
+    return worldpop_df
