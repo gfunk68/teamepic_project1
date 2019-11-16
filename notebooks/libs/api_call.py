@@ -57,7 +57,9 @@ def consumer_electronics():
     CountryRevenueInfo = pd.DataFrame(country_ids, index = country_names)
     CountryRevenueInfo=CountryRevenueInfo.rename(columns={0:"Country ID"})
     CountryRevenueInfo['Country Code'] = country_code
-    CountryRevenueInfo['Revenue 2019 ($M)']=""
+    CountryRevenue2019 = CountryRevenueInfo.copy(deep=True)
+    CountryRevenue2019['Year']="2019"
+    CountryRevenue2019['Revenue ($M)']=""
     for index, row in CountryRevenueInfo.iterrows():
         #print(row['Country ID'])
         page = requests.get('https://www.statista.com/outlook/251/' + str(row['Country ID']) + '/consumer-electronics/worldwide')
@@ -66,9 +68,13 @@ def consumer_electronics():
         word=revenue[0].split('$')
         money = word[1].split('m')
         #print(money[0])
-        CountryRevenueInfo.loc[[index],['Revenue 2019 ($M)']] = money[0]
-    CountryRevenueInfo['Revenue 2017 ($M)']=""
-    CountryRevenueInfo['Revenue 2018 ($M)']=""
+        CountryRevenue2019.loc[[index],['Revenue ($M)']] = money[0]
+    CountryRevenue2018 = CountryRevenueInfo.copy(deep=True)
+    CountryRevenue2017 = CountryRevenueInfo.copy(deep=True)
+    CountryRevenue2017['Year'] = '2017'
+    CountryRevenue2018['Year'] = '2018'
+    CountryRevenueInfo['Revenue ($M)']=""
+    CountryRevenueInfo['Revenue ($M)']=""
     for index, row in CountryRevenueInfo.iterrows():
         #print(row['Country ID'])
         page = requests.get('https://www.statista.com/outlook/251/' + str(row['Country ID']) + '/consumer-electronics/worldwide')
@@ -79,8 +85,12 @@ def consumer_electronics():
         split1 = theclass['data-highcharts'].split('\"data\":[')
         split2 = split1[1].split(']}]')
         split3 = split2[0].split(',')
-        CountryRevenueInfo.loc[[index],['Revenue 2017 ($M)']] = split3[0]
-        CountryRevenueInfo.loc[[index],['Revenue 2018 ($M)']] = split3[1]
-    CountryRevenueInfo.to_csv(os.path.join("Resources","Consumer_Electronics_Sales.csv"))
+        CountryRevenue2017.loc[[index],['Revenue ($M)']] = split3[0]
+        CountryRevenue2018.loc[[index],['Revenue ($M)']] = split3[1]
+#print (CountryRevenueInfo)
+    CountryRevenueInfo = pd.concat([CountryRevenue2017,CountryRevenue2018,CountryRevenue2019], ignore_index = False, sort=True)
+
+    CountryRevenueInfo['Revenue ($M)'] = (CountryRevenueInfo['Revenue ($M)']).str.replace(',','').astype(float)
+
     
     return CountryRevenueInfo
