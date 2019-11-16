@@ -81,6 +81,6 @@ def consumer_electronics():
         split3 = split2[0].split(',')
         CountryRevenueInfo.loc[[index],['Revenue 2017 ($M)']] = split3[0]
         CountryRevenueInfo.loc[[index],['Revenue 2018 ($M)']] = split3[1]
-    CountryRevenueInfo.to_csv(os.path.join("Resources","Consumer_Electronics_Sales.csv"))
+    #CountryRevenueInfo.to_csv(os.path.join("Resources","Consumer_Electronics_Sales.csv"))
     
     return CountryRevenueInfo

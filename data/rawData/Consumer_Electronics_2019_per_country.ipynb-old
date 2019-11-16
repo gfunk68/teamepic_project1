@@ -873,9 +873,7 @@
     }
    ],
    "source": [
-    "CountryRevenue2019 = CountryRevenueInfo.copy(deep=True)\n",
-    "CountryRevenue2019['Year']=\"2019\"\n",
-    "CountryRevenue2019['Revenue ($M)']=\"\"\n",
+    "CountryRevenueInfo['Revenue 2019 ($M)']=\"\"\n",
     "for index, row in CountryRevenueInfo.iterrows():\n",
     "    #print(row['Country ID'])\n",
     "    page = requests.get('https://www.statista.com/outlook/251/' + str(row['Country ID']) + '/consumer-electronics/worldwide')\n",
@@ -884,8 +882,8 @@
     "    word=revenue[0].split('$')\n",
     "    money = word[1].split('m')\n",
     "    #print(money[0])\n",
-    "    CountryRevenue2019.loc[[index],['Revenue ($M)']] = money[0]\n",
-    "print (CountryRevenue2019)"
+    "    CountryRevenueInfo.loc[[index],['Revenue 2019 ($M)']] = money[0]\n",
+    "print (CountryRevenueInfo)"
    ]
   },
   {
@@ -894,12 +892,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "CountryRevenue2018 = CountryRevenueInfo.copy(deep=True)\n",
-    "CountryRevenue2017 = CountryRevenueInfo.copy(deep=True)\n",
-    "CountryRevenue2017['Year'] = '2017'\n",
-    "CountryRevenue2018['Year'] = '2018'\n",
-    "CountryRevenueInfo['Revenue ($M)']=\"\"\n",
-    "CountryRevenueInfo['Revenue ($M)']=\"\"\n",
+    "CountryRevenueInfo['Revenue 2017 ($M)']=\"\"\n",
+    "CountryRevenueInfo['Revenue 2018 ($M)']=\"\"\n",
     "for index, row in CountryRevenueInfo.iterrows():\n",
     "    #print(row['Country ID'])\n",
     "    page = requests.get('https://www.statista.com/outlook/251/' + str(row['Country ID']) + '/consumer-electronics/worldwide')\n",
@@ -910,9 +904,9 @@
     "    split1 = theclass['data-highcharts'].split('\\\"data\\\":[')\n",
     "    split2 = split1[1].split(']}]')\n",
     "    split3 = split2[0].split(',')\n",
-    "    CountryRevenue2017.loc[[index],['Revenue ($M)']] = split3[0]\n",
-    "    CountryRevenue2018.loc[[index],['Revenue ($M)']] = split3[1]\n",
-    "#print (CountryRevenueInfo)"
+    "    CountryRevenueInfo.loc[[index],['Revenue 2017 ($M)']] = split3[0]\n",
+    "    CountryRevenueInfo.loc[[index],['Revenue 2018 ($M)']] = split3[1]\n",
+    "print (CountryRevenueInfo)"
    ]
   },
   {
@@ -921,10 +915,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "CountryRevenueInfo = pd.concat([CountryRevenue2017,CountryRevenue2018,CountryRevenue2019], ignore_index = False, sort=True)\n",
-    "\n",
-    "CountryRevenueInfo['Revenue ($M)'] = (CountryRevenueInfo['Revenue ($M)']).str.replace(',','').astype(float)\n",
-    "CountryRevenueInfo"
+    "CountryRevenueInfo.to_csv(os.path.join(\"Consumer_Electronics_Sales.csv\"))"
    ]
   }
  ],
