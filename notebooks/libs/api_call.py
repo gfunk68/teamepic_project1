@@ -1,3 +1,5 @@
+#this python file defines functions to make website and API calls so you can recreate the clean dataset by running one notebook file (merge_df.ipynb) that calls these functions.
+
 import pandas as pd
 import requests
 import os
